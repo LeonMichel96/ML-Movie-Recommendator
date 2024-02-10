@@ -3,3 +3,5 @@ raw/
 .DS_Store
 .DS_Store?
 ._*
+*checkpoint.ipynb
+*.ipynb_checkpoints/
