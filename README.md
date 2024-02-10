@@ -17,3 +17,5 @@ Link: https://datasets.imdbws.com/
 You will need to download:
 - title.ratings
 - title.basics
+- title.crews
+- name.basics

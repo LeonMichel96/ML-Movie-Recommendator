@@ -5,3 +5,4 @@ raw/
 ._*
 *checkpoint.ipynb
 *.ipynb_checkpoints/
+extracted/
