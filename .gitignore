@@ -1,0 +1,5 @@
+raw/
+*.gz
+.DS_Store
+.DS_Store?
+._*
