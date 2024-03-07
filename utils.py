@@ -71,4 +71,31 @@ def find_movies(merged_df, movies):
 
     selected_movies = merged_df.iloc[movies_indexes]
     selected_movies.drop(columns=['Title', 'Genre', 'Director'], inplace =True)
-    return selected_movies
+    return selected_movies, movies_indexes
+
+def nearest_n(selected_df, x_projected_df, merged_df, indexes):
+    '''
+    Fits a NearestNeighbors model and returns a dataframe with the original selected movies plus
+    the 10 nearest neighbors of each one of them.
+
+    '''
+    nearest = NearestNeighbors(n_neighbors=11)
+    nearest.fit(x_projected_df)
+
+# Get 10 nearest neighbors of each movie
+    k = nearest.kneighbors(selected_df, return_distance=False)
+
+# Get all 55 indexes in k
+    expanded_indexes = []
+    for neighbor in k:
+        for index_num in neighbor:
+                expanded_indexes.append(index_num)
+
+# Create final df with original selected movies and recommendations
+
+    recomendation_df = merged_df.iloc[expanded_indexes]
+    recomendation_df.drop(index=indexes, axis=0,inplace=True)
+    recomendation_df.reset_index(inplace=True)
+    recomendation_df.drop(columns=['index'], inplace=True)
+
+    return recomendation_df

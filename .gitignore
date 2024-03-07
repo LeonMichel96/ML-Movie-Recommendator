@@ -6,3 +6,4 @@ raw/
 *checkpoint.ipynb
 *.ipynb_checkpoints/
 extracted/
+*.pyc
