@@ -15,7 +15,7 @@ from sklearn.neighbors import NearestNeighbors
 
 # Preprocessing Pipelines
 cat_transformer = Pipeline([
-    ('Encoder',OneHotEncoder(handle_unknown='ignore', sparse=False)),
+    ('Encoder',OneHotEncoder(handle_unknown='ignore', sparse_output=False)),
     ('Scaler', StandardScaler())
     ])
 num_transformer = Pipeline([('Scaler',StandardScaler())])
