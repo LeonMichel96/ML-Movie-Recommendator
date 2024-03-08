@@ -1,6 +1,6 @@
 # Imports
 import pandas as pd
-import numpy as np
+#import numpy as np
 
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
@@ -9,9 +9,9 @@ from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 from sklearn.neighbors import NearestNeighbors
 
-import plotly.express as px
-import matplotlib.pyplot as plt
-import seaborn as sns
+#import plotly.express as px
+#import matplotlib.pyplot as plt
+#import seaborn as sns
 
 # Preprocessing Pipelines
 cat_transformer = Pipeline([

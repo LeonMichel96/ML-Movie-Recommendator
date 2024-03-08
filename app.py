@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-import numpy as np
+#import numpy as np
 import streamlit as st
 
 from utils import preprocessor, x_projected, merged_data, find_movies, nearest_n, clustered_movies, movie_by_cluster
