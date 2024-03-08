@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import streamlit as st
 
-from utils import preprocessor, x_projected, merged_data, find_movies, nearest_n
+from utils import preprocessor, x_projected, merged_data, find_movies, nearest_n, clustered_movies, movie_by_cluster
 
 # Get the original df
 base_directory = os.getcwd()
@@ -34,7 +34,7 @@ st.markdown('''
 st.subheader('Choose five of your favorite movies')
 st.text('Note: some movies may not be included in the database due to prior cleaning steps')
 
-# Movie selection and identification, movies variable just for test
+# Movie selection and identification
 
 with st.form('User input'):
     col1, col2, col3 = st.columns(3, gap='large')
@@ -65,9 +65,59 @@ if submitted:
     movies = [movie1, movie2, movie3, movie4, movie5]
     selected_df, movies_indexes = find_movies(merged_df, movies)
 
-    print(selected_df)
 
 # KNN steps
 
     recommendation_df = nearest_n(selected_df,X_projected,merged_df, movies_indexes)
-    st.write(recommendation_df.head(11))
+
+# KMeans steps
+    final_df = clustered_movies(recommendation_df)
+
+
+
+# Group by cluster
+    cluster_1 = movie_by_cluster(final_df, 0)
+    cluster_2 = movie_by_cluster(final_df, 1)
+    cluster_3 = movie_by_cluster(final_df, 2)
+
+    mix1_col1, mix1_col2 = st.columns(2, gap='large')
+
+    with mix1_col1:
+        st.subheader('First Movie Mix :fire:')
+        st.text('First Segment of movie recommendations:')
+        st.write(cluster_1)
+
+    with mix1_col2:
+        st.subheader('Genres')
+        st.write('')
+        st.write('')
+        genres1=pd.DataFrame(cluster_1['Genre'].unique(), columns=['Genre'])
+        st.write(genres1)
+
+    mix2_col1, mix2_col2 = st.columns(2, gap='large')
+
+    with mix2_col1:
+        st.subheader('Second Movie Mix :sparkler:')
+        st.text('Second Segment of movie recommendations:')
+        st.write(cluster_2)
+
+    with mix2_col2:
+        st.subheader('Genres')
+        st.write('')
+        st.write('')
+        genres2=pd.DataFrame(cluster_2['Genre'].unique(), columns=['Genre'])
+        st.write(genres2)
+
+    mix3_col1, mix3_col2 = st.columns(2, gap='large')
+
+    with mix3_col1:
+        st.subheader('Third Movie Mix :collision:')
+        st.text('Third Segment of movie recommendations:')
+        st.write(cluster_3)
+
+    with mix3_col2:
+        st.subheader('Genres')
+        st.write('')
+        st.write('')
+        genres3=pd.DataFrame(cluster_3['Genre'].unique(), columns=['Genre'])
+        st.write(genres3)

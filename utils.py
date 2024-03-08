@@ -70,7 +70,7 @@ def find_movies(merged_df, movies):
         movies_indexes.append(index)
 
     selected_movies = merged_df.iloc[movies_indexes]
-    selected_movies.drop(columns=['Title', 'Genre', 'Director'], inplace =True)
+    selected_movies= selected_movies.drop(columns=['Title', 'Genre', 'Director'])
     return selected_movies, movies_indexes
 
 def nearest_n(selected_df, x_projected_df, merged_df, indexes):
@@ -82,20 +82,45 @@ def nearest_n(selected_df, x_projected_df, merged_df, indexes):
     nearest = NearestNeighbors(n_neighbors=11)
     nearest.fit(x_projected_df)
 
-# Get 10 nearest neighbors of each movie
+    # Get 10 nearest neighbors of each movie
     k = nearest.kneighbors(selected_df, return_distance=False)
 
-# Get all 55 indexes in k
+    # Get all 55 indexes in k
     expanded_indexes = []
     for neighbor in k:
         for index_num in neighbor:
                 expanded_indexes.append(index_num)
 
-# Create final df with original selected movies and recommendations
+    # Create final df with original selected movies and recommendations
 
     recomendation_df = merged_df.iloc[expanded_indexes]
-    recomendation_df.drop(index=indexes, axis=0,inplace=True)
-    recomendation_df.reset_index(inplace=True)
-    recomendation_df.drop(columns=['index'], inplace=True)
+    recomendation_df = recomendation_df.drop(index=indexes, axis=0)
+    recomendation_df= recomendation_df.reset_index()
+    recomendation_df = recomendation_df.drop(columns=['index'])
 
     return recomendation_df
+
+# KMeans steps
+
+def clustered_movies(recommendation_df):
+    '''
+    Fits a Kmeans object (3 clusters) and returns the exact same recommendation dataframe
+    adding each movie a label indicating the cluster belonging to it
+
+    '''
+    km = KMeans(n_clusters=3)
+    km.fit(recommendation_df.drop(columns=['Title', 'Director', 'Genre']))
+    # Movies labeled
+    labels = pd.DataFrame(km.labels_, columns=['Cluster'])
+
+    # Merge recommendation dataframe with labels
+    final_df = recommendation_df.merge(labels, how='left', left_index=True, right_index=True)
+
+    return final_df
+
+    # Movies by cluster
+
+def movie_by_cluster(df,cluster):
+    group_df = df[df['Cluster']==cluster]
+    group_df= group_df[['Title', 'Genre','Director']]
+    return group_df
