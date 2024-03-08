@@ -2,7 +2,7 @@ import streamlit as st
 
 st.markdown('''
 # Introduction
-## Welcome to MovieLens Insights :movie_camera:!
+## Welcome to Movie Recommendator System :movie_camera:!
 
 Discover personalized movie recommendations tailored to your unique taste with our advanced data science-driven recommendation system. Here's how it works:
 
